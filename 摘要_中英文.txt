@@ -1,0 +1,25 @@
+摘　　要
+
+针对幼儿园园务管理中信息分散、家校沟通依赖即时通讯工具、通知与作业传达不易留痕、请假等事项需人工中转等问题，本文以家长、教师与管理员三方协同为切入点，提出并实现一套基于 Web 的幼儿园管理信息系统。研究目标是在明确角色边界的前提下，将幼儿档案、班级组织、通知作业、请假审批与双向评价等高频业务线上化、流程化，提升园务办理效率与数据可追溯性。
+
+系统采用浏览器/服务器（B/S）架构与前后端分离思路：后端选用 Python 生态中的 Django 框架，并结合 Django REST framework 提供规范化 REST 接口，承载鉴权、角色权限与核心业务规则；前端采用 Vue.js 与 Element Plus 构建管理端界面，通过 HTTP 调用接口完成数据交互；持久层采用 MySQL 存储用户、班级、幼儿、通知作业、请假、评价及系统参数与字典等数据，借助外键与约束保障一致性。主要工作包括需求分析、总体与数据库设计、各功能模块实现及系统测试。经功能测试与典型场景验证，各模块协同可用，能够满足园所日常协同管理的基本需要。
+
+本工作的价值在于：以工程化方式验证了主流 Web 技术栈在学前教育管理场景中的适用性，为园所信息化落地提供了可部署、可扩展的实现参考，并对同类教育管理系统的模块划分与权限设计具有一定借鉴意义。
+
+关键词：幼儿园；园务管理；三方协同；前后端分离；MySQL
+
+ 
+ABSTRACT
+
+Kindergarten daily operations still rely heavily on fragmented channels such as paper records and instant messaging, which makes it difficult to standardize and trace critical workflows including notices, homework, and leave requests. Aiming at the collaboration among parents, teachers, and administrators, this thesis designs and implements a web-based kindergarten management information system. The core objective is to move high-frequency business processes online with clear role boundaries, improve the efficiency of routine affairs, and enhance data traceability.
+
+The system adopts a browser/server architecture and a decoupled front-end/back-end approach. On the server side, Django together with Django REST framework is used to expose RESTful APIs and implement authentication, role-based access control, and business logic. On the client side, Vue.js and Element Plus are employed to build interactive administrative pages that communicate with the backend over HTTP. MySQL is used as the relational database to persist users, classes, students, notices and homework, leave requests, evaluations, system configuration, and dictionary data, while foreign keys and integrity constraints help keep data consistent. The main contributions include requirements analysis, overall and database design, module implementation, and system testing. Functional tests and typical scenarios show that the modules work together reliably and meet the basic needs of daily collaborative management in a kindergarten.
+
+This work demonstrates the feasibility of mainstream web technologies for preschool management scenarios, provides a deployable engineering reference, and offers practical insights for modularization and permission design in similar education-oriented information systems.
+
+Key words: Kindergarten; Campus affairs management; Three-party collaboration; Front-end and back-end separation; MySQL
+
+【格式说明】
+1. 中文摘要字数约 300—600 字（以 Word「字数统计」为准，可按学校要求微调）。
+2. 关键词在正文摘要中均有对应表述；若学校要求 3—8 个词，可在导师同意下增减（保持业务词与技术词兼顾）。
+3. 英文摘要与关键词与中文内容对应，定稿时请核对专有名词大小写及学校对 ABSTRACT 字数的额外规定。
