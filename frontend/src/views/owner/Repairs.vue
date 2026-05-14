@@ -16,7 +16,6 @@ const completedOrders = ref([])
 
 const propertyId = ref('')
 const description = ref('')
-const imageUrls = ref('')
 const err = ref('')
 const msg = ref('')
 const toast = useToast()
@@ -61,12 +60,6 @@ watch([orderPage, orderPageSize], () => {
   loadOrders()
 })
 
-function parseImages() {
-  const s = imageUrls.value.trim()
-  if (!s) return []
-  return s.split(/[\n,]/).map((x) => x.trim()).filter(Boolean)
-}
-
 async function submit() {
   err.value = ''
   msg.value = ''
@@ -74,12 +67,10 @@ async function submit() {
     await http.post('/api/property/repairs/', {
       property: Number(propertyId.value),
       description: description.value,
-      images: parseImages(),
     })
     msg.value = '提交成功'
     toast.success('报修单已提交')
     description.value = ''
-    imageUrls.value = ''
     orderPage.value = 1
     await load()
   } catch (e) {
@@ -123,10 +114,6 @@ async function submitFeedback() {
       <div class="rpms-field">
         <label>故障描述</label>
         <textarea v-model="description" class="rpms-textarea" rows="4" style="max-width: 640px" />
-      </div>
-      <div class="rpms-field">
-        <label>图片地址（逗号或换行分隔，可选）</label>
-        <textarea v-model="imageUrls" class="rpms-textarea" rows="2" style="max-width: 640px" />
       </div>
       <button type="button" class="rpms-btn rpms-btn--primary" @click="submit">提交报修</button>
       <p v-if="err" class="rpms-msg--err" style="margin-top: 12px">{{ err }}</p>

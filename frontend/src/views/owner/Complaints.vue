@@ -13,7 +13,6 @@ const pageSize = ref(10)
 const type = ref('service')
 const title = ref('')
 const description = ref('')
-const images = ref('')
 const err = ref('')
 const msg = ref('')
 const toast = useToast()
@@ -31,12 +30,6 @@ onMounted(load)
 
 watch([page, pageSize], load)
 
-function parseImages() {
-  const s = images.value.trim()
-  if (!s) return []
-  return s.split(/[\n,]/).map((x) => x.trim()).filter(Boolean)
-}
-
 async function submit() {
   err.value = ''
   msg.value = ''
@@ -45,13 +38,11 @@ async function submit() {
       type: type.value,
       title: title.value,
       description: description.value,
-      images: parseImages(),
     })
     msg.value = '已提交'
     toast.success('投诉已提交')
     title.value = ''
     description.value = ''
-    images.value = ''
     page.value = 1
     await load()
   } catch (e) {
@@ -82,10 +73,6 @@ async function submit() {
       <div class="rpms-field">
         <label>描述</label>
         <textarea v-model="description" class="rpms-textarea" rows="4" style="max-width: 640px" />
-      </div>
-      <div class="rpms-field">
-        <label>证据图片地址（可选，逗号或换行分隔）</label>
-        <textarea v-model="images" class="rpms-textarea" rows="2" style="max-width: 640px" />
       </div>
       <button type="button" class="rpms-btn rpms-btn--primary" @click="submit">提交</button>
       <p v-if="err" class="rpms-msg--err" style="margin-top: 12px">{{ err }}</p>
