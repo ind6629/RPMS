@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import http from '@/api/http'
+import { paymentMethodLabel } from '@/utils/display'
 import { useToast } from '@/utils/toast'
 
 const router = useRouter()
@@ -142,7 +143,7 @@ onBeforeUnmount(() => {
       </div>
       <div class="recharge-result__row" v-if="payment">
         <span>支付方式</span>
-        <strong>{{ payment.payment_method }}</strong>
+        <strong>{{ paymentMethodLabel(payment.payment_method) }}</strong>
       </div>
     </div>
 

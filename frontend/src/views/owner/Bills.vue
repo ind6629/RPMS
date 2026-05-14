@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateCN, statusLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -67,8 +68,8 @@ async function pay(id) {
               <td>{{ b.year_month }}</td>
               <td>{{ b.charge_item_name }}</td>
               <td>{{ b.amount }}</td>
-              <td>{{ b.status }}</td>
-              <td>{{ b.due_date }}</td>
+              <td>{{ statusLabel(b.status) }}</td>
+              <td>{{ formatDateCN(b.due_date) }}</td>
               <td>
                 <button
                   v-if="b.status !== 'paid'"
@@ -78,7 +79,7 @@ async function pay(id) {
                 >
                   支付宝缴纳
                 </button>
-                <span v-else class="rpms-muted">已缴</span>
+                <span v-else class="rpms-muted">{{ statusLabel(b.status) }}</span>
               </td>
             </tr>
           </tbody>

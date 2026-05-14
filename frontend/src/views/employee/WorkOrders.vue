@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateCN, statusLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -120,7 +121,7 @@ async function complete(id) {
     <div class="rpms-panel role-dashboard__hero">
       <div class="role-dashboard__hero-top">
         <div>
-          <p class="role-dashboard__eyebrow">EMPLOYEE DASHBOARD</p>
+          <p class="role-dashboard__eyebrow">员工看板</p>
           <h2 class="role-dashboard__title">工作台</h2>
           <p class="role-dashboard__subtitle">这里先看待办和完成情况，再进入工单处理。</p>
         </div>
@@ -183,8 +184,8 @@ async function complete(id) {
             <p class="role-dashboard__mini-title">最新工单</p>
             <ul class="role-dashboard__mini-list">
               <li v-for="o in list.slice(0, 5)" :key="o.id">
-                <span>#{{ o.id }} · {{ o.status }}</span>
-                <strong>{{ o.created_at?.slice(0, 10) }}</strong>
+                <span>#{{ o.id }} · {{ statusLabel(o.status) }}</span>
+                <strong>{{ formatDateCN(o.created_at) }}</strong>
               </li>
               <li v-if="!list.length" class="rpms-muted">暂无工单</li>
             </ul>
@@ -194,7 +195,7 @@ async function complete(id) {
             <ul class="role-dashboard__mini-list">
               <li v-for="f in latestFeedback" :key="f.id">
                 <span>#{{ f.order }} · {{ f.rating }}星</span>
-                <strong>{{ f.created_at?.slice(0, 10) }}</strong>
+                <strong>{{ formatDateCN(f.created_at) }}</strong>
               </li>
               <li v-if="!latestFeedback.length" class="rpms-muted">暂无反馈</li>
             </ul>
@@ -212,7 +213,7 @@ async function complete(id) {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>状态</th>
               <th>业主</th>
               <th>描述</th>
@@ -222,7 +223,7 @@ async function complete(id) {
           <tbody>
             <tr v-for="o in list" :key="o.id">
               <td>{{ o.id }}</td>
-              <td>{{ o.status }}</td>
+              <td>{{ statusLabel(o.status) }}</td>
               <td>{{ o.user_info?.username }}</td>
               <td>{{ o.description?.slice(0, 56) }}</td>
               <td>

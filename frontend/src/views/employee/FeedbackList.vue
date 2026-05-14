@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateTimeCN } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 
 const list = ref([])
@@ -42,7 +43,7 @@ watch([page, pageSize], load)
               <td>#{{ f.order }}</td>
               <td>{{ f.rating }}</td>
               <td>{{ f.comment }}</td>
-              <td>{{ f.created_at?.slice(0, 16) }}</td>
+              <td>{{ formatDateTimeCN(f.created_at) }}</td>
             </tr>
           </tbody>
         </table>

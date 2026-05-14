@@ -145,7 +145,7 @@ async function saveComplaint(c) {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>标题</th>
               <th>状态</th>
               <th>处理</th>

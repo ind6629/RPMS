@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateTimeCN } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 
 const list = ref([])
@@ -28,7 +29,7 @@ watch([page, pageSize], load)
     <template v-if="total > 0">
       <article v-for="a in list" :key="a.id" class="rpms-announce">
         <h3>{{ a.title }}</h3>
-        <p class="meta">{{ a.type }} · {{ a.publish_time || a.created_at }}</p>
+        <p class="meta">{{ a.type }} · {{ formatDateTimeCN(a.publish_time || a.created_at) }}</p>
         <div class="body">{{ a.content }}</div>
       </article>
       <RpmsPagination

@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateTimeCN } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -82,7 +83,7 @@ async function addLog() {
     <div class="rpms-panel">
       <h2 class="rpms-panel-title">导出</h2>
       <a class="rpms-link" href="/api/operation/logs/export_csv/" target="_blank" rel="noreferrer"
-        >下载日志 CSV</a
+        >下载日志表格</a
       >
     </div>
     <div class="rpms-panel">
@@ -105,7 +106,7 @@ async function addLog() {
           </thead>
           <tbody>
             <tr v-for="g in logs" :key="g.id">
-              <td>{{ g.created_at }}</td>
+              <td>{{ formatDateTimeCN(g.created_at) }}</td>
               <td>{{ g.user_name }}</td>
               <td>{{ g.action }}</td>
               <td>{{ g.detail }}</td>

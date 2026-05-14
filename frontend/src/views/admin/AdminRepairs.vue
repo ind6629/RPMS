@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { statusLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -119,15 +120,15 @@ async function importBatch() {
     <div class="rpms-panel">
       <h2 class="rpms-panel-title">新增工单</h2>
       <div class="rpms-form-row">
-        <input v-model="newOrder.property" class="rpms-input" placeholder="房产ID" />
-        <input v-model="newOrder.user" class="rpms-input" placeholder="报修业主ID" />
+        <input v-model="newOrder.property" class="rpms-input" placeholder="房产编号" />
+        <input v-model="newOrder.user" class="rpms-input" placeholder="报修业主编号" />
         <select v-model="newOrder.status" class="rpms-select">
           <option value="pending">待处理</option>
           <option value="processing">处理中</option>
           <option value="completed">已完成</option>
           <option value="cancelled">已取消</option>
         </select>
-        <input v-model="newOrder.assigned_to" class="rpms-input" placeholder="处理员工ID(可空)" />
+        <input v-model="newOrder.assigned_to" class="rpms-input" placeholder="处理员工编号（可空）" />
       </div>
       <div class="rpms-field">
         <label>故障描述</label>
@@ -148,7 +149,7 @@ async function importBatch() {
     <div class="rpms-panel">
       <h2 class="rpms-panel-title">导出</h2>
       <a class="rpms-link" href="/api/property/repairs/export_csv/" target="_blank" rel="noreferrer"
-        >下载工单 CSV</a
+        >下载工单表格</a
       >
     </div>
     <div class="rpms-panel">
@@ -161,10 +162,10 @@ async function importBatch() {
           <option value="completed">已完成</option>
           <option value="cancelled">已取消</option>
         </select>
-        <input v-model="userFilter" class="rpms-input" placeholder="报修人ID" />
-        <input v-model="assignedFilter" class="rpms-input" placeholder="处理人ID" />
-        <input v-model="propertyFilter" class="rpms-input" placeholder="房产ID" />
-        <input v-model="keyword" class="rpms-input" placeholder="关键词(描述/用户名/房号)" />
+        <input v-model="userFilter" class="rpms-input" placeholder="报修人编号" />
+        <input v-model="assignedFilter" class="rpms-input" placeholder="处理人编号" />
+        <input v-model="propertyFilter" class="rpms-input" placeholder="房产编号" />
+        <input v-model="keyword" class="rpms-input" placeholder="关键词（描述/用户名/房号）" />
         <button type="button" class="rpms-btn rpms-btn--primary" @click="search">查询</button>
         <button type="button" class="rpms-btn rpms-btn--secondary" @click="resetSearch">重置</button>
       </div>
@@ -172,7 +173,7 @@ async function importBatch() {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>状态</th>
               <th>报修人</th>
               <th>处理人</th>
@@ -182,7 +183,7 @@ async function importBatch() {
           <tbody>
             <tr v-for="o in repairs" :key="o.id">
               <td>{{ o.id }}</td>
-              <td>{{ o.status }}</td>
+              <td>{{ statusLabel(o.status) }}</td>
               <td>{{ o.user_info?.username }}</td>
               <td>{{ o.assigned_to_info?.username }}</td>
               <td>{{ o.description?.slice(0, 48) }}</td>

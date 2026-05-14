@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateTimeCN, statusLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -105,8 +106,8 @@ async function submit() {
           <tbody>
             <tr v-for="c in list" :key="c.id">
               <td>{{ c.title }}</td>
-              <td>{{ c.status }}</td>
-              <td>{{ c.created_at?.slice(0, 16) }}</td>
+              <td>{{ statusLabel(c.status) }}</td>
+              <td>{{ formatDateTimeCN(c.created_at) }}</td>
             </tr>
           </tbody>
         </table>

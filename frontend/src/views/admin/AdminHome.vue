@@ -149,7 +149,7 @@ onMounted(loadDashboard)
     <div class="admin-home__hero rpms-panel">
       <div class="admin-home__hero-top">
         <div>
-          <p class="admin-home__eyebrow">ADMIN DASHBOARD</p>
+          <p class="admin-home__eyebrow">管理看板</p>
           <h2 class="admin-home__title">欢迎，{{ auth.user?.username }}</h2>
           <p class="admin-home__subtitle">
             这里集中展示用户、房产、工单、财务、投诉与系统运行概况，帮助你快速掌握物业管理状态。

@@ -118,7 +118,7 @@ async function createAnnouncement() {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>标题</th>
               <th>已发布</th>
             </tr>

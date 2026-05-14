@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import NavIcon from '@/components/NavIcon.vue'
+import { roleLabel } from '@/utils/display'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -127,7 +128,7 @@ async function onLogout() {
           }}</span>
           <div class="rpms-sidebar__user-meta">
             <span class="rpms-sidebar__user-name">{{ auth.user?.username }}</span>
-            <span class="rpms-sidebar__user-role">{{ auth.role }}</span>
+            <span class="rpms-sidebar__user-role">{{ roleLabel(auth.role) }}</span>
           </div>
         </div>
         <button type="button" class="rpms-sidebar__logout" @click="onLogout">退出登录</button>
@@ -155,6 +156,10 @@ async function onLogout() {
 }
 
 .rpms-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   width: 260px;
   flex-shrink: 0;
   display: flex;
@@ -166,6 +171,7 @@ async function onLogout() {
   border-right: 1px solid rgba(148, 163, 184, 0.12);
   box-shadow: 4px 0 24px rgba(15, 23, 42, 0.12);
   transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
 }
 
 .rpms-sidebar--collapsed {
@@ -409,6 +415,12 @@ async function onLogout() {
   flex-direction: column;
   min-height: 100vh;
   background: var(--rpms-main-bg);
+  margin-left: 260px;
+  transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rpms-app--sidebar-collapsed .rpms-content-col {
+  margin-left: 76px;
 }
 
 .rpms-topbar {

@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { statusLabel, toLocalDateInput } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -52,7 +53,7 @@ function nowYM() {
 function defaultDueDate() {
   const d = new Date()
   d.setDate(d.getDate() + 30)
-  return d.toISOString().slice(0, 10)
+  return toLocalDateInput(d)
 }
 
 async function refreshCharges() {
@@ -294,7 +295,7 @@ async function importBills() {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>名称</th>
               <th>类型</th>
               <th>单价</th>
@@ -357,7 +358,7 @@ async function importBills() {
     </div>
     <div class="rpms-panel">
       <h2 class="rpms-panel-title">批量导入账单（文件）</h2>
-      <p class="rpms-muted">JSON格式：[{"property":1,"charge_item":1,"year_month":"2026-04","amount":"120.00","status":"unpaid","due_date":"2026-04-30","remark":"备注"}]，可直接选择json文件。</p>
+      <p class="rpms-muted">JSON 格式：[{"property":1,"charge_item":1,"year_month":"2026-04","amount":"120.00","status":"unpaid","due_date":"2026-04-30","remark":"备注"}]，可直接选择 JSON 文件。</p>
       <textarea v-model="importText" class="rpms-textarea" rows="4" style="width: 100%; box-sizing: border-box" />
       <div class="rpms-form-row">
         <input type="file" accept=".json,application/json" @change="onImportFile" />
@@ -375,7 +376,7 @@ async function importBills() {
       </div>
       <p class="rpms-muted" style="margin-top: 8px">
         <a class="rpms-link" href="/api/finance/bills/export_csv/" target="_blank" rel="noreferrer"
-          >导出账单 CSV</a
+          >导出账单表格</a
         >
       </p>
     </div>
@@ -399,7 +400,7 @@ async function importBills() {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>房产</th>
               <th>收费项</th>
               <th>账期</th>
@@ -414,7 +415,7 @@ async function importBills() {
               <td>{{ b.charge_item_name }}</td>
               <td>{{ b.year_month }}</td>
               <td>{{ b.amount }}</td>
-              <td>{{ b.status }}</td>
+              <td>{{ statusLabel(b.status) }}</td>
             </tr>
           </tbody>
         </table>

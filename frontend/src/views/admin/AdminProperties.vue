@@ -266,7 +266,7 @@ const IMPORT_FORMAT_HINT = `批量导入（快速建房屋）JSON 数组格式�
             href="/api/users/properties/export_csv/"
             target="_blank"
             rel="noreferrer"
-            >导出 CSV</a
+        >导出表格</a
           >
           <button type="button" class="rpms-btn rpms-btn--secondary" @click="openImportModal">导入</button>
         </div>
@@ -294,7 +294,7 @@ const IMPORT_FORMAT_HINT = `批量导入（快速建房屋）JSON 数组格式�
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>类型</th>
               <th>名称</th>
               <th>楼栋</th>

@@ -2,9 +2,12 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { useAuthStore } from '@/stores/auth'
+import { roleLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
+const auth = useAuthStore()
 const users = ref([])
 const total = ref(0)
 const page = ref(1)
@@ -67,6 +70,25 @@ async function toggleUser(u) {
     toast.error(toast.errorMessage(e, '启用/禁用失败'))
   }
 }
+
+async function deleteUser(u) {
+  if (u.id === auth.user?.id) {
+    toast.warn('不能删除当前登录账号')
+    return
+  }
+  if (!window.confirm(`确认删除用户“${u.username}”吗？此操作不可恢复。`)) return
+  try {
+    await http.delete(`/api/users/accounts/${u.id}/`)
+    msg.value = '用户已删除'
+    toast.success(`用户 ${u.username} 已删除`)
+    if (users.value.length === 1 && page.value > 1) {
+      page.value -= 1
+    }
+    await refresh()
+  } catch (e) {
+    toast.error(toast.errorMessage(e, '删除用户失败'))
+  }
+}
 </script>
 
 <template>
@@ -109,23 +131,28 @@ async function toggleUser(u) {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>用户名</th>
               <th>角色</th>
               <th>状态</th>
-              <th></th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="u in users" :key="u.id">
               <td>{{ u.id }}</td>
               <td>{{ u.username }}</td>
-              <td>{{ u.role }}</td>
+              <td>{{ roleLabel(u.role) }}</td>
               <td>{{ u.status ? '启用' : '禁用' }}</td>
               <td>
-                <button type="button" class="rpms-btn rpms-btn--secondary" @click="toggleUser(u)">
-                  启用/禁用
-                </button>
+                <div class="user-actions">
+                  <button type="button" class="rpms-btn rpms-btn--secondary" @click="toggleUser(u)">
+                    启用/禁用
+                  </button>
+                  <button type="button" class="rpms-btn rpms-btn--danger" @click="deleteUser(u)">
+                    删除
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -141,3 +168,22 @@ async function toggleUser(u) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.user-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rpms-btn--danger {
+  border-color: rgba(220, 38, 38, 0.24);
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+}
+
+.rpms-btn--danger:hover {
+  background: rgba(220, 38, 38, 0.16);
+  color: #991b1b;
+}
+</style>

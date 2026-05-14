@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import http from '@/api/http'
 import RpmsPagination from '@/components/RpmsPagination.vue'
+import { formatDateTimeCN, statusLabel } from '@/utils/display'
 import { unwrapPaginated } from '@/utils/unwrapPaginated'
 import { useToast } from '@/utils/toast'
 
@@ -138,7 +139,7 @@ async function submitFeedback() {
         <table class="rpms-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>编号</th>
               <th>状态</th>
               <th>时间</th>
               <th>描述</th>
@@ -147,8 +148,8 @@ async function submitFeedback() {
           <tbody>
             <tr v-for="o in orders" :key="o.id">
               <td>{{ o.id }}</td>
-              <td>{{ o.status }}</td>
-              <td>{{ o.created_at?.slice(0, 16) }}</td>
+              <td>{{ statusLabel(o.status) }}</td>
+              <td>{{ formatDateTimeCN(o.created_at) }}</td>
               <td>{{ o.description?.slice(0, 40) }}</td>
             </tr>
           </tbody>

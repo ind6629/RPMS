@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import http from '@/api/http'
 import { useAuthStore } from '@/stores/auth'
+import { formatDateCN, statusLabel } from '@/utils/display'
 
 const auth = useAuthStore()
 
@@ -126,7 +127,7 @@ onMounted(load)
     <div class="rpms-panel role-dashboard__hero">
       <div class="role-dashboard__hero-top">
         <div>
-          <p class="role-dashboard__eyebrow">OWNER DASHBOARD</p>
+          <p class="role-dashboard__eyebrow">业主看板</p>
           <h2 class="role-dashboard__title">欢迎，{{ auth.user?.username }}</h2>
           <p class="role-dashboard__subtitle">
             这里汇总您的房产、账单、报修和投诉状态，便于快速了解当前办理进度。
@@ -216,8 +217,8 @@ onMounted(load)
             <p class="role-dashboard__mini-title">待处理工单</p>
             <ul class="role-dashboard__mini-list">
               <li v-for="r in latestRepairs" :key="r.id">
-                <span>#{{ r.id }} · {{ r.status }}</span>
-                <strong>{{ r.created_at?.slice(0, 10) }}</strong>
+                <span>#{{ r.id }} · {{ statusLabel(r.status) }}</span>
+                <strong>{{ formatDateCN(r.created_at) }}</strong>
               </li>
               <li v-if="!latestRepairs.length" class="rpms-muted">暂无待处理工单</li>
             </ul>
@@ -227,7 +228,7 @@ onMounted(load)
             <ul class="role-dashboard__mini-list">
               <li v-for="a in latestAnnouncements" :key="a.id">
                 <span>{{ a.title }}</span>
-                <strong>{{ a.publish_time?.slice(0, 10) || a.created_at?.slice(0, 10) }}</strong>
+                <strong>{{ formatDateCN(a.publish_time || a.created_at) }}</strong>
               </li>
               <li v-if="!latestAnnouncements.length" class="rpms-muted">暂无公告</li>
             </ul>
