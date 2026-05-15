@@ -17,6 +17,14 @@ const err = ref('')
 const msg = ref('')
 const toast = useToast()
 
+function handlerName(item) {
+  return item?.handler_info?.username || '待分配'
+}
+
+function handlerRemark(item) {
+  return item?.handler_remark?.trim() || '暂无备注'
+}
+
 async function load() {
   const { data } = await http.get('/api/property/complaints/', {
     params: { page: page.value, page_size: pageSize.value },
@@ -88,6 +96,8 @@ async function submit() {
               <th>标题</th>
               <th>状态</th>
               <th>时间</th>
+              <th>处理人</th>
+              <th>处理备注</th>
             </tr>
           </thead>
           <tbody>
@@ -95,6 +105,8 @@ async function submit() {
               <td>{{ c.title }}</td>
               <td>{{ statusLabel(c.status) }}</td>
               <td>{{ formatDateTimeCN(c.created_at) }}</td>
+              <td>{{ handlerName(c) }}</td>
+              <td>{{ handlerRemark(c) }}</td>
             </tr>
           </tbody>
         </table>

@@ -1,0 +1,32 @@
+[
+  {
+    "building_number": "1",
+    "unit_number": "1",
+    "room_number": "101",
+    "area": 89.5
+  },
+  {
+    "building_number": "1",
+    "unit_number": "1",
+    "room_number": "102",
+    "area": 92
+  },
+  {
+    "building_number": "1",
+    "unit_number": "2",
+    "room_number": "201",
+    "area": 108.6
+  },
+  {
+    "building_number": "2",
+    "unit_number": "1",
+    "room_number": "101",
+    "area": 96.3
+  },
+  {
+    "building_number": "2",
+    "unit_number": "2",
+    "room_number": "2201",
+    "area": 128
+  }
+]

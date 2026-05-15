@@ -25,6 +25,14 @@ const rating = ref(5)
 const comment = ref('')
 const fbMsg = ref('')
 
+function assignedName(order) {
+  return order?.assigned_to_info?.username || '未分配'
+}
+
+function repairRemark(order) {
+  return order?.remark?.trim() || '暂无备注'
+}
+
 async function loadMyPropertiesForSelect() {
   const { data } = await http.get('/api/users/properties/my_properties/', {
     params: { page: 1, page_size: 100 },
@@ -129,7 +137,9 @@ async function submitFeedback() {
               <th>编号</th>
               <th>状态</th>
               <th>时间</th>
+              <th>处理人</th>
               <th>描述</th>
+              <th>处理备注</th>
             </tr>
           </thead>
           <tbody>
@@ -137,7 +147,9 @@ async function submitFeedback() {
               <td>{{ o.id }}</td>
               <td>{{ statusLabel(o.status) }}</td>
               <td>{{ formatDateTimeCN(o.created_at) }}</td>
+              <td>{{ assignedName(o) }}</td>
               <td>{{ o.description?.slice(0, 40) }}</td>
+              <td>{{ repairRemark(o) }}</td>
             </tr>
           </tbody>
         </table>

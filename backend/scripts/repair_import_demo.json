@@ -1,0 +1,31 @@
+[
+  {
+    "property": 1,
+    "user": 2,
+    "description": "客厅照明线路偶发闪烁，请安排电工检查。",
+    "images": [],
+    "status": "pending",
+    "assigned_to": null,
+    "remark": "演示导入数据"
+  },
+  {
+    "property": 2,
+    "user": 2,
+    "description": "厨房水槽下方轻微渗水，需要上门处理。",
+    "images": [
+      "/uploads/demo/leak-1.jpg"
+    ],
+    "status": "processing",
+    "assigned_to": 3,
+    "remark": "已指派员工处理中"
+  },
+  {
+    "property": 3,
+    "user": 4,
+    "description": "卧室空调无法启动，遥控器和电源均已检查。",
+    "images": [],
+    "status": "completed",
+    "assigned_to": 3,
+    "remark": "已完成维修，供前台演示列表状态"
+  }
+]

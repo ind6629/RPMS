@@ -1,0 +1,29 @@
+[
+  {
+    "property": 1,
+    "charge_item": 1,
+    "year_month": "2026-04",
+    "amount": "120.00",
+    "status": "unpaid",
+    "due_date": "2026-04-30",
+    "remark": "4月物业费演示数据"
+  },
+  {
+    "property": 2,
+    "charge_item": 1,
+    "year_month": "2026-04",
+    "amount": "120.00",
+    "status": "paid",
+    "due_date": "2026-04-30",
+    "remark": "4月物业费，已缴费演示"
+  },
+  {
+    "property": 3,
+    "charge_item": 2,
+    "year_month": "2026-04",
+    "amount": "80.50",
+    "status": "overdue",
+    "due_date": "2026-04-15",
+    "remark": "停车费逾期演示"
+  }
+]
