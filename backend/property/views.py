@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from operation.utils import log_action
-from users.models import User
+from users.models import Property, User
 
 from .models import Complaint, RepairOrder, ServiceFeedback
 from .serializers import (
@@ -96,7 +96,7 @@ class RepairOrderViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(status=st)
             return qs.filter(assigned_to=u)
         if _owner(u):
-            qs = qs.filter(user=u)
+            qs = qs.filter(Q(user=u) | Q(property__owner=u)).distinct()
             st = self.request.query_params.get('status')
             if st:
                 qs = qs.filter(status=st)
@@ -178,12 +178,18 @@ class RepairOrderViewSet(viewsets.ModelViewSet):
                 if not prop or not uid:
                     errors.append(f'第{idx}行缺少 property 或 user')
                     continue
+                property_obj = Property.objects.select_related('owner').filter(pk=prop).first()
+                if not property_obj:
+                    errors.append(f'Property not found: {prop}')
+                    continue
                 user = User.objects.filter(pk=uid, role='owner').first()
                 if not user:
                     errors.append(f'第{idx}行业主用户不存在: {uid}')
                     continue
+                if property_obj.owner_id and property_obj.owner_id != user.id:
+                    user = property_obj.owner
                 order = RepairOrder.objects.create(
-                    property_id=prop,
+                    property=property_obj,
                     user=user,
                     description=row.get('description', ''),
                     images=row.get('images') or [],

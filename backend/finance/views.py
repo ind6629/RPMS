@@ -290,6 +290,57 @@ class BillViewSet(viewsets.ModelViewSet):
         log_action(request, 'bill_generate', f'{year_month} 生成{n}条')
         return Response({'created': n, 'year_month': year_month})
 
+    @action(detail=False, methods=['post'], url_path='generate-all')
+    def generate_all(self, request):
+        if not _admin(request.user):
+            return Response({'detail': '无权限'}, status=status.HTTP_403_FORBIDDEN)
+        year_month = request.data.get('year_month') or date.today().strftime('%Y-%m')
+        charge_item_id = request.data.get('charge_item')
+        if not charge_item_id:
+            return Response({'detail': '缺少 charge_item'}, status=status.HTTP_400_BAD_REQUEST)
+        item = ChargeItem.objects.filter(pk=charge_item_id, is_active=True).first()
+        if not item:
+            return Response({'detail': '收费项目不存在或未启用'}, status=status.HTTP_400_BAD_REQUEST)
+        due_raw = request.data.get('due_date') or date.today().isoformat()
+        try:
+            due = date.fromisoformat(str(due_raw)[:10])
+        except ValueError:
+            due = date.today()
+
+        rooms = Property.objects.filter(property_type='room', status=True)
+        total_targets = rooms.count()
+        created_count = 0
+        for prop in rooms:
+            _, created = Bill.objects.get_or_create(
+                property=prop,
+                charge_item=item,
+                year_month=year_month,
+                defaults={
+                    'amount': item.unit_price,
+                    'status': 'unpaid',
+                    'due_date': due,
+                },
+            )
+            if created:
+                created_count += 1
+
+        skipped_count = total_targets - created_count
+        log_action(
+            request,
+            'bill_generate_all',
+            f'{year_month} {item.name} 全员收费，新建{created_count}条，跳过{skipped_count}条',
+        )
+        return Response(
+            {
+                'created': created_count,
+                'skipped': skipped_count,
+                'total_targets': total_targets,
+                'year_month': year_month,
+                'charge_item': item.id,
+                'charge_item_name': item.name,
+            }
+        )
+
     @action(detail=False, methods=['get'])
     def export_csv(self, request):
         if not _admin(request.user):
