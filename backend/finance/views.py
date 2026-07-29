@@ -186,6 +186,7 @@ class BillViewSet(viewsets.ModelViewSet):
         )
         log_action(request, 'bill_pay', f'账单#{bill.id}')
         return Response(BillSerializer(bill).data)
+    
 
     @action(detail=False, methods=['post'], url_path='alipay/confirm')
     def alipay_confirm(self, request):
